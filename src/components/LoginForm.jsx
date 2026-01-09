@@ -7,7 +7,7 @@ const LoginForm = ({ onLogin }) => {
   const handleSubmit = (e) => {
     e.preventDefault(); // evita el refresh
 
-    onLogin({ userName, password }); // enviamos datos al padre
+    onLogin({ username: userName, password }); // enviamos datos al padre
   };
 
   return (

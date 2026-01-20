@@ -9,15 +9,32 @@ const App = () => {
   //Maneja el estado si un usario esta o no logueado
   const [user, setUser] = useState(null);
 
+  //Hace login con los datos del formulario, los guarda en local
   const handleLogin = async (credentials) => {
     try {
       const loggedUser = await loginService.login(credentials);
       setUser(loggedUser);
+      localStorage.setItem("userSaved", JSON.stringify(loggedUser));
     } catch (error) {
       console.error("Login Failed", error);
     }
   };
 
+  //Hace logout y limpia localstorage
+  const handleLogout = () => {
+    setUser(null);
+    localStorage.removeItem("userSaved");
+  };
+
+  //Monitorea si hay un datos de inicio en local, en caso de que si los obtiene y los parsea
+  useEffect(() => {
+    const storedUser = localStorage.getItem("userSaved");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
+  //Monitorea si hay un usuario, en caso de que si carga sus blogs
   useEffect(() => {
     if (user) {
       blogService.getAll(user.token).then((blogs) => setBlogs(blogs));
@@ -35,7 +52,8 @@ const App = () => {
         ) : (
           <div>
             <h2>blogs</h2>
-            <p>Bienvenido {user.name}</p>
+            <p>Bienvenido {user.name}</p>{" "}
+            <button onClick={handleLogout}>Logout</button>
             {blogs.map((blog) => (
               <Blog key={blog.id} blog={blog} />
             ))}

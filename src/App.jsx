@@ -3,6 +3,7 @@ import Blog from "./components/Blog";
 import LoginForm from "./components/LoginForm";
 import loginService from "./services/login";
 import blogService from "./services/blogs";
+import BlogForm from "./components/BlogForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -54,6 +55,7 @@ const App = () => {
             <h2>blogs</h2>
             <p>Bienvenido {user.name}</p>{" "}
             <button onClick={handleLogout}>Logout</button>
+            <BlogForm />
             {blogs.map((blog) => (
               <Blog key={blog.id} blog={blog} />
             ))}
